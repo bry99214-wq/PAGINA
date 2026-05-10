@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contacto — Boku no Hero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      font-family: 'Orbitron', monospace;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .fondo {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at top, rgba(0,102,255,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom, rgba(0,255,247,0.1) 0%, transparent 60%),
+        #000;
+      z-index: 0;
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,204,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,204,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: moverGrid 8s linear infinite;
+      z-index: 0;
+    }
+    @keyframes moverGrid {
+      from { background-position: 0 0; }
+      to   { background-position: 0 40px; }
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 48px;
+      background: rgba(0,0,0,0.8);
+      border-bottom: 1px solid rgba(0,229,204,0.3);
+      backdrop-filter: blur(8px);
+    }
+
+    .logo {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: #00FFF7;
+      text-shadow: 0 0 10px #00FFF7;
+    }
+    .logo span { color: #0066FF; text-shadow: 0 0 10px #0066FF; }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 11px;
+      letter-spacing: 2px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.activo {
+      color: #00FFF7;
+      text-shadow: 0 0 8px #00FFF7;
+    }
+
+    .contenido {
+      position: relative;
+      z-index: 10;
+      padding: 120px 48px 60px;
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .titulo-pagina { text-align: center; }
+    .titulo-pagina h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: #00FFF7;
+      text-shadow: 0 0 20px #00FFF7;
+      margin-bottom: 10px;
+    }
+    .titulo-pagina p {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .seccion-titulo {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #0066FF;
+      text-shadow: 0 0 8px #0066FF;
+      margin-bottom: 16px;
+    }
+
+    .correo-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border: 1px solid rgba(0,255,247,0.2);
+      background: rgba(0,255,247,0.03);
+    }
+    .correo-icono { font-size: 24px; }
+    .correo-info p:first-child {
+      font-size: 10px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+    .correo-info a {
+      font-size: 13px;
+      color: #00FFF7;
+      text-shadow: 0 0 8px #00FFF7;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .correo-info a:hover { text-decoration: underline; }
+
+    .redes {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .red {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border: 1px solid rgba(0,255,247,0.2);
+      background: rgba(0,0,0,0.4);
+      text-decoration: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      flex: 1;
+      min-width: 140px;
+    }
+    .red:hover {
+      border-color: rgba(0,255,247,0.5);
+      background: rgba(0,255,247,0.05);
+      box-shadow: 0 0 12px rgba(0,255,247,0.1);
+    }
+    .red-icono { font-size: 20px; }
+    .red-info p:first-child {
+      font-size: 11px;
+      color: #00FFF7;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+    .red-info p:last-child {
+      font-size: 9px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 1px;
+    }
+
+    .formulario {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .campo label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+    }
+    .campo input,
+    .campo textarea {
+      background: rgba(0,255,247,0.03);
+      border: 1px solid rgba(0,255,247,0.2);
+      padding: 12px 16px;
+      color: #fff;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+    .campo input:focus,
+    .campo textarea:focus {
+      border-color: rgba(0,255,247,0.6);
+      box-shadow: 0 0 10px rgba(0,255,247,0.1);
+    }
+    .campo textarea { height: 120px; resize: none; }
+
+    .btn-enviar {
+      padding: 14px 32px;
+      font-family: 'Orbitron', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #00FFF7;
+      background: transparent;
+      border: 2px solid #00FFF7;
+      box-shadow: 0 0 10px rgba(0,255,247,0.3);
+      text-shadow: 0 0 8px #00FFF7;
+      transition: all 0.2s;
+      align-self: flex-start;
+    }
+    .btn-enviar:hover {
+      background: rgba(0,255,247,0.08);
+      box-shadow: 0 0 20px rgba(0,255,247,0.5);
+    }
+    .btn-enviar:active { transform: scale(0.96); }
+
+    #mensaje-enviado {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #00FFF7;
+      text-shadow: 0 0 8px #00FFF7;
+      min-height: 20px;
+      display: none;
+    }
+
+    .btn-volver {
+      display: inline-block;
+      padding: 10px 28px;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #0066FF;
+      background: transparent;
+      border: 1px solid #0066FF;
+      box-shadow: 0 0 10px rgba(0,102,255,0.3);
+      text-shadow: 0 0 8px #0066FF;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-volver:hover {
+      background: rgba(0,102,255,0.08);
+      box-shadow: 0 0 20px rgba(0,102,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="fondo"></div>
+  <div class="grid"></div>
+
+  <nav>
+    <div class="logo">BOKU NO <span>HERO</span></div>
+    <ul class="nav-links">
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="explorar.html">Explorar</a></li>
+      <li><a href="contacto.html" class="activo">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <div class="contenido">
+
+    <div class="titulo-pagina">
+      <h1>CONTACTO</h1>
+      <p>// comunícate con nosotros //</p>
+    </div>
+
+    <div>
+      <div class="seccion-titulo">▸ CORREO ELECTRÓNICO</div>
+      <div class="correo-box">
+        <div class="correo-icono">📧</div>
+        <div class="correo-info">
+          <p>Escríbenos a</p>
+          <a href="mailto:tucorreo@gmail.com">tucorreo@gmail.com</a>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="seccion-titulo">▸ REDES SOCIALES</div>
+      <div class="redes">
+        <a href="#" class="red">
+          <div class="red-icono">📘</div>
+          <div class="red-info">
+            <p>Facebook</p>
+            <p>@bokuhero</p>
+          </div>
+        </a>
+        <a href="#" class="red">
+          <div class="red-icono">📸</div>
+          <div class="red-info">
+            <p>Instagram</p>
+            <p>@bokuhero</p>
+          </div>
+        </a>
+        <a href="#" class="red">
+          <div class="red-icono">🐦</div>
+          <div class="red-info">
+            <p>Twitter / X</p>
+            <p>@bokuhero</p>
+          </div>
+        </a>
+        <a href="#" class="red">
+          <div class="red-icono">▶️</div>
+          <div class="red-info">
+            <p>YouTube</p>
+            <p>@bokuhero</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="seccion-titulo">▸ FORMULARIO DE CONTACTO</div>
+      <div class="formulario">
+        <div class="campo">
+          <label>Nombre</label>
+          <input type="text" id="nombre" placeholder="Tu nombre...">
+        </div>
+        <div class="campo">
+          <label>Correo</label>
+          <input type="email" id="correo" placeholder="tucorreo@gmail.com">
+        </div>
+        <div class="campo">
+          <label>Mensaje</label>
+          <textarea id="mensaje" placeholder="Escribe tu mensaje..."></textarea>
+        </div>
+        <button class="btn-enviar" onclick="enviar()">Enviar mensaje</button>
+        <div id="mensaje-enviado">✓ Mensaje enviado correctamente</div>
+      </div>
+    </div>
+
+    <a href="index.html" class="btn-volver">← Volver</a>
+
+  </div>
+
+  <script>
+    function enviar() {
+      const nombre = document.getElementById('nombre').value;
+      const correo = document.getElementById('correo').value;
+      const mensaje = document.getElementById('mensaje').value;
+
+      if (!nombre || !correo || !mensaje) {
+        alert('Por favor completa todos los campos');
+        return;
+      }
+
+      const confirmacion = document.getElementById('mensaje-enviado');
+      confirmacion.style.display = 'block';
+      document.getElementById('nombre').value = '';
+      document.getElementById('correo').value = '';
+      document.getElementById('mensaje').value = '';
+
+      setTimeout(() => confirmacion.style.display = 'none', 3000);
+    }
+  </script>
+
+</body>
+</html>
