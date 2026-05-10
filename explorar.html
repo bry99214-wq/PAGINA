@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Explorar — Boku no Hero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      font-family: 'Orbitron', monospace;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .fondo {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at top, rgba(0,102,255,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom, rgba(0,255,247,0.1) 0%, transparent 60%),
+        #000;
+      z-index: 0;
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,204,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,204,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: moverGrid 8s linear infinite;
+      z-index: 0;
+    }
+    @keyframes moverGrid {
+      from { background-position: 0 0; }
+      to   { background-position: 0 40px; }
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 48px;
+      background: rgba(0,0,0,0.8);
+      border-bottom: 1px solid rgba(0,229,204,0.3);
+      backdrop-filter: blur(8px);
+    }
+
+    .logo {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: #00FFF7;
+      text-shadow: 0 0 10px #00FFF7;
+    }
+    .logo span { color: #0066FF; text-shadow: 0 0 10px #0066FF; }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 11px;
+      letter-spacing: 2px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.activo {
+      color: #00FFF7;
+      text-shadow: 0 0 8px #00FFF7;
+    }
+
+    .contenido {
+      position: relative;
+      z-index: 10;
+      padding: 100px 48px 60px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .seccion-titulo {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #0066FF;
+      text-shadow: 0 0 8px #0066FF;
+      margin-bottom: 20px;
+      margin-top: 50px;
+    }
+
+    .temporadas {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .temporada {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 20px;
+      border: 1px solid rgba(0,255,247,0.15);
+      background: rgba(0,255,247,0.02);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .temporada:hover {
+      border-color: rgba(0,255,247,0.4);
+      background: rgba(0,255,247,0.05);
+    }
+    .temp-num {
+      font-size: 24px;
+      font-weight: 800;
+      color: #00FFF7;
+      text-shadow: 0 0 10px #00FFF7;
+      min-width: 40px;
+    }
+    .temp-info h3 {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .temp-info p {
+      font-size: 10px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+    }
+    .temp-eps {
+      margin-left: auto;
+      font-size: 10px;
+      color: rgba(0,255,247,0.6);
+      letter-spacing: 1px;
+    }
+
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .card {
+      border: 1px solid rgba(0,255,247,0.2);
+      background: rgba(0,0,0,0.5);
+      padding: 20px 16px;
+      width: 200px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      border-color: rgba(0,255,247,0.5);
+      box-shadow: 0 0 16px rgba(0,255,247,0.1);
+    }
+    .card.villano {
+      border-color: rgba(0,102,255,0.2);
+    }
+    .card.villano:hover {
+      border-color: rgba(0,102,255,0.5);
+      box-shadow: 0 0 16px rgba(0,102,255,0.1);
+    }
+    .card-icono { font-size: 24px; margin-bottom: 10px; }
+    .card h3 {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #00FFF7;
+      text-shadow: 0 0 6px #00FFF7;
+      margin-bottom: 6px;
+    }
+    .card.villano h3 {
+      color: #0066FF;
+      text-shadow: 0 0 6px #0066FF;
+    }
+    .card-quirk {
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+    .card p {
+      font-size: 9px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.5px;
+    }
+
+    .peliculas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .pelicula {
+      border: 1px solid rgba(0,102,255,0.2);
+      background: rgba(0,0,0,0.5);
+      padding: 20px;
+      width: 220px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .pelicula:hover {
+      border-color: rgba(0,102,255,0.5);
+      box-shadow: 0 0 16px rgba(0,102,255,0.1);
+    }
+    .pelicula-año {
+      font-size: 9px;
+      color: #0066FF;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    .pelicula h3 {
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    .pelicula p {
+      font-size: 9px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-volver {
+      display: inline-block;
+      margin-top: 48px;
+      padding: 10px 28px;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #0066FF;
+      background: transparent;
+      border: 1px solid #0066FF;
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(0,102,255,0.3);
+      text-shadow: 0 0 8px #0066FF;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-volver:hover {
+      background: rgba(0,102,255,0.08);
+      box-shadow: 0 0 20px rgba(0,102,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="fondo"></div>
+  <div class="grid"></div>
+
+  <nav>
+    <div class="logo">BOKU NO <span>HERO</span></div>
+    <ul class="nav-links">
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="explorar.html" class="activo">Explorar</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <div class="contenido">
+
+    <div class="seccion-titulo">▸ TEMPORADAS</div>
+    <div class="temporadas">
+      <div class="temporada">
+        <div class="temp-num">01</div>
+        <div class="temp-info">
+          <h3>El nacimiento de Deku</h3>
+          <p>Izuku conoce a All Might y hereda el One For All</p>
+        </div>
+        <div class="temp-eps">13 eps</div>
+      </div>
+      <div class="temporada">
+        <div class="temp-num">02</div>
+        <div class="temp-info">
+          <h3>El torneo deportivo</h3>
+          <p>El U.A. celebra su festival deportivo anual</p>
+        </div>
+        <div class="temp-eps">25 eps</div>
+      </div>
+      <div class="temporada">
+        <div class="temp-num">03</div>
+        <div class="temp-info">
+          <h3>Campamento de entrenamiento</h3>
+          <p>La Liga de Villanos ataca y Bakugo es capturado</p>
+        </div>
+        <div class="temp-eps">25 eps</div>
+      </div>
+      <div class="temporada">
+        <div class="temp-num">04</div>
+        <div class="temp-info">
+          <h3>Overhaul</h3>
+          <p>Deku se enfrenta al villano Chisaki para salvar a Eri</p>
+        </div>
+        <div class="temp-eps">25 eps</div>
+      </div>
+      <div class="temporada">
+        <div class="temp-num">05</div>
+        <div class="temp-info">
+          <h3>Guerra del Frente de Liberación</h3>
+          <p>Los héroes se enfrentan al ejército de Shigaraki</p>
+        </div>
+        <div class="temp-eps">25 eps</div>
+      </div>
+      <div class="temporada">
+        <div class="temp-num">06</div>
+        <div class="temp-info">
+          <h3>Guerra Final</h3>
+          <p>La batalla definitiva entre héroes y villanos</p>
+        </div>
+        <div class="temp-eps">25 eps</div>
+      </div>
+    </div>
+
+    <div class="seccion-titulo">▸ PERSONAJES Y PODERES</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icono">⚡</div>
+        <h3>Izuku Midoriya</h3>
+        <div class="card-quirk">Quirk: One For All</div>
+        <p>Acumula y libera energía sobrehumana. Hereda el poder de todos sus predecesores.</p>
+      </div>
+      <div class="card">
+        <div class="card-icono">💥</div>
+        <h3>Katsuki Bakugo</h3>
+        <div class="card-quirk">Quirk: Explosión</div>
+        <p>Genera explosiones con el sudor de sus palmas. Control total de la dirección y potencia.</p>
+      </div>
+      <div class="card">
+        <div class="card-icono">🌊</div>
+        <h3>Shoto Todoroki</h3>
+        <div class="card-quirk">Quirk: Mitad Frío Mitad Calor</div>
+        <p>Genera hielo por el lado derecho y fuego por el izquierdo simultáneamente.</p>
+      </div>
+      <div class="card">
+        <div class="card-icono">🎀</div>
+        <h3>Ochaco Uraraka</h3>
+        <div class="card-quirk">Quirk: Gravedad Cero</div>
+        <p>Anula la gravedad de cualquier objeto que toque con las yemas de sus dedos.</p>
+      </div>
+    </div>
+
+    <div class="seccion-titulo">▸ VILLANOS</div>
+    <div class="cards">
+      <div class="card villano">
+        <div class="card-icono">☠️</div>
+        <h3>Tomura Shigaraki</h3>
+        <div class="card-quirk">Quirk: Decadencia</div>
+        <p>Desintegra cualquier cosa que toque con sus cinco dedos. Líder de la Liga de Villanos.</p>
+      </div>
+      <div class="card villano">
+        <div class="card-icono">🌫️</div>
+        <h3>All For One</h3>
+        <div class="card-quirk">Quirk: All For One</div>
+        <p>Roba y acumula los Quirks de otros. El villano más poderoso de la historia.</p>
+      </div>
+      <div class="card villano">
+        <div class="card-icono">🧬</div>
+        <h3>Overhaul</h3>
+        <div class="card-quirk">Quirk: Overhaul</div>
+        <p>Desensambla y reensambla cualquier materia que toque, incluyendo seres vivos.</p>
+      </div>
+      <div class="card villano">
+        <div class="card-icono">🔵</div>
+        <h3>Dabi</h3>
+        <div class="card-quirk">Quirk: Llama Cremación</div>
+        <p>Genera llamas azules de altísima temperatura. Identidad oculta con un oscuro pasado.</p>
+      </div>
+    </div>
+
+    <div class="seccion-titulo">▸ PELÍCULAS</div>
+    <div class="peliculas">
+      <div class="pelicula">
+        <div class="pelicula-año">2018</div>
+        <h3>Two Heroes</h3>
+        <p>Deku y All Might visitan una isla flotante que es tomada por villanos.</p>
+      </div>
+      <div class="pelicula">
+        <div class="pelicula-año">2019</div>
+        <h3>Heroes Rising</h3>
+        <p>La clase 1-A protege una isla del villano Nine, el más poderoso tras All For One.</p>
+      </div>
+      <div class="pelicula">
+        <div class="pelicula-año">2021</div>
+        <h3>World Heroes Mission</h3>
+        <p>Deku es acusado de asesinato masivo mientras investiga una organización criminal.</p>
+      </div>
+      <div class="pelicula">
+        <div class="pelicula-año">2024</div>
+        <h3>You're Next</h3>
+        <p>La batalla final continúa en una nueva aventura cinematográfica de la serie.</p>
+      </div>
+    </div>
+
+    <a href="index.html" class="btn-volver">← Volver</a>
+
+  </div>
+
+</body>
+</html>
